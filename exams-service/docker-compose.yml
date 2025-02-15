@@ -1,0 +1,22 @@
+version: '3.3'
+
+services:
+  postgres:
+    image: postgres:alpine
+    restart: on-failure
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=exams_db
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    restart: on-failure
+    ports:
+      - "3000:8080"
+
+volumes:
+  postgres_db:

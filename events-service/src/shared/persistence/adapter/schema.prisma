@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Registration {
+  id        Int      @id @default(autoincrement()) @map("registration_id")
+  examId    String   @map("exam_id")
+  userId    Int      @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@index([examId])
+  @@index([examId, userId])
+  @@map("registrations")
+}
+
+model ResourceLock {
+  id           Int      @id @default(autoincrement()) @map("lock_id")
+  resource     String   @unique()
+  expiringDate DateTime @map("expiring_date")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("resource_locks")
+}
+
+model Exam {
+  id         Int      @id @default(autoincrement()) @map("exam_id")
+  title      String
+  externalId String   @map("external_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  event      Event[]
+
+  @@unique([externalId])
+  @@map("exams")
+}
+
+model Event {
+  id                    Int         @id @default(autoincrement()) @map("event_id")
+  title                 String
+  exam                  Exam        @relation(fields: [examId], references: [id])
+  examId                Int         @map("exam_id")
+  status                EventStatus @default(CREATED)
+  expectedRegistrations Int         @map("expected_registrations")
+  totalRegistrations    Int         @default(0) @map("total_registrations")
+  date                  DateTime
+  createdAt             DateTime    @default(now()) @map("created_at")
+
+  @@map("events")
+}
+
+enum EventStatus {
+  CREATED
+  CANCELLED
+  CONFIRMED
+  FINISHED
+}

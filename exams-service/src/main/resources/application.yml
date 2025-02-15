@@ -1,0 +1,28 @@
+quarkus:
+  datasource:
+    db-kind: postgresql
+    jdbc:
+      url: ${DB_URL:jdbc:postgresql://localhost:5432/exams_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  hibernate-orm:
+    database:
+      generation: update
+  rest-client:
+    questions-service:
+      url: ${API_QUESTIONS_SERVICE_URL:http://localhost:8081}
+
+mp:
+  messaging:
+    incoming:
+      exams-in:
+        connector: smallrye-rabbitmq
+        queue:
+          name: exams
+        exchange:
+          name: exams
+    outgoing:
+      exams-out:
+        connector: smallrye-rabbitmq
+        exchange:
+          name: exams
