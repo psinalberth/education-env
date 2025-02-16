@@ -15,13 +15,13 @@ datasource db {
 
 model Registration {
   id        Int      @id @default(autoincrement()) @map("registration_id")
-  examId    String   @map("exam_id")
+  event     Event    @relation(fields: [eventId], references: [id])
+  eventId   Int      @map("event_id")
   userId    Int      @map("user_id")
   createdAt DateTime @default(now()) @map("created_at")
 
   @@index([userId])
-  @@index([examId])
-  @@index([examId, userId])
+  @@index([userId, eventId])
   @@map("registrations")
 }
 
@@ -46,15 +46,16 @@ model Exam {
 }
 
 model Event {
-  id                    Int         @id @default(autoincrement()) @map("event_id")
+  id                    Int            @id @default(autoincrement()) @map("event_id")
   title                 String
-  exam                  Exam        @relation(fields: [examId], references: [id])
-  examId                Int         @map("exam_id")
-  status                EventStatus @default(CREATED)
-  expectedRegistrations Int         @map("expected_registrations")
-  totalRegistrations    Int         @default(0) @map("total_registrations")
+  exam                  Exam           @relation(fields: [examId], references: [id])
+  examId                Int            @map("exam_id")
+  status                EventStatus    @default(CREATED)
+  expectedRegistrations Int            @map("expected_registrations")
+  totalRegistrations    Int            @default(0) @map("total_registrations")
   date                  DateTime
-  createdAt             DateTime    @default(now()) @map("created_at")
+  createdAt             DateTime       @default(now()) @map("created_at")
+  Registration          Registration[]
 
   @@map("events")
 }

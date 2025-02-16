@@ -1,5 +1,5 @@
 export class RegistrationDto {
   registrationId: number;
-  examId: string;
+  eventId: number;
   createdAt: Date;
 }

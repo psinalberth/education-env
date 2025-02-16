@@ -27,14 +27,14 @@ export class RegistrationService {
     request: CreateRegistrationDto,
   ): Promise<RegistrationDto> {
     const existingRegistration =
-      await this.registrationRepository.findByUserIdAndExamId(
+      await this.registrationRepository.findByUserIdAndEventId(
         Number.parseInt(request.userId),
-        request.examId,
+        request.eventId,
       );
 
     if (existingRegistration) {
       this.logger.log(
-        `m=registerSubscription, o=Subscription for user=${request.userId} and examId=${request.examId} already exists.`,
+        `m=registerSubscription, o=Subscription for user=${request.userId} and examId=${request.eventId} already exists.`,
       );
       return existingRegistration;
     }

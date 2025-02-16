@@ -6,9 +6,9 @@ export interface RegistrationRepository {
 
   findAll(userId: number): Promise<RegistrationDto[]>;
 
-  findByUserIdAndExamId(
+  findByUserIdAndEventId(
     userId: number,
-    examId: string,
+    eventId: number,
   ): Promise<RegistrationDto | null>;
 }
 

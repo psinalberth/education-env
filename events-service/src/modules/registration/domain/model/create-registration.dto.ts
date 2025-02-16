@@ -1,5 +1,5 @@
 export class CreateRegistrationDto {
-  examId: string;
+  eventId: number;
   userId: string;
   userEmail: string;
 }

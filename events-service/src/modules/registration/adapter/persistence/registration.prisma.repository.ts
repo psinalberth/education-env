@@ -13,16 +13,16 @@ export class RegistrationPrismaRepository implements RegistrationRepository {
 
   constructor(private prisma: PrismaProvider) {}
 
-  async findByUserIdAndExamId(
+  async findByUserIdAndEventId(
     userId: number,
-    examId: string,
+    eventId: number,
   ): Promise<RegistrationDto | null> {
     this.logger.log(
-      `m=findByUserIdAndExamId, o=userId ${userId}, o=examId ${examId}`,
+      `m=findByUserIdAndExamId, o=userId ${userId}, o=examId ${eventId}`,
     );
     const registration = await this.prisma.registration.findFirst({
       where: {
-        examId: examId,
+        eventId: eventId,
         userId: userId,
       },
     });
@@ -44,7 +44,7 @@ export class RegistrationPrismaRepository implements RegistrationRepository {
     const registration = await this.prisma.registration
       .create({
         data: {
-          examId: request.examId,
+          eventId: request.eventId,
           userId: Number.parseInt(request.userId),
         },
       })
@@ -58,7 +58,7 @@ export class RegistrationPrismaRepository implements RegistrationRepository {
   private mapDto(registration: Registration): RegistrationDto {
     return {
       registrationId: registration.id,
-      examId: registration.examId,
+      eventId: registration.eventId,
       createdAt: registration.createdAt,
     } as RegistrationDto;
   }
